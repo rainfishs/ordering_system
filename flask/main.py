@@ -1,5 +1,5 @@
 from flask import Flask,request,render_template,jsonify,json
-
+import os
 
 app = Flask(__name__)
 @app.route("/")
@@ -18,4 +18,5 @@ def setter():
 
 
 if __name__ == '__main__':
+    os.system('copy.bat')
     app.run('0.0.0.0',debug=True,port=80)
