@@ -5,26 +5,10 @@
                 <span>點餐系統 v0.1</span>
             </n-layout-header>
             <NLayoutContent class="main-page">
-                <n-grid cols="2 400:4 600:6" x-gap="10px">
+                <n-grid cols="2 400:3 600:4">
                     <n-grid-item>
-                        <n-collapse class="menu-list">
-                            <n-collapse-item  v-for="(item, _, index) in menu.value">
-                                <template #header>
-                                    <div>{{ item }}</div>
-                                </template>
-                                <div>通过</div>
-                            </n-collapse-item>
-                        </n-collapse></n-grid-item>
-                    <n-grid-item>
-                        <n-collapse class="menu-list">
-                            <n-collapse-item content-style="higth: 10px" v-for="(item, _, index) in menu.value">
-                                <template #header>
-                                    <div>{{ item }}</div>
-                                </template>
-                                <div>通过</div>
-                            </n-collapse-item>
-                        </n-collapse>
-                    </n-grid-item>
+                    <n-tree block-line :data="menu.value" checkable expand-on-click selectable />
+                </n-grid-item>
                 </n-grid>
                 {{ menu }}
             </NLayoutContent>
@@ -38,9 +22,11 @@
 <script setup>
 import axios from "axios";
 import { onBeforeMount, reactive } from "vue";
-import { NConfigProvider, darkTheme, NGrid, NGridItem, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCollapse, NCollapseItem } from 'naive-ui'
+import { NConfigProvider, darkTheme, NGrid, NGridItem, NTree, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCollapse, NCollapseItem } from 'naive-ui'
 
-const menu = reactive({ value: 2 })
+
+
+const menu = reactive({value: [{"label":"漢堡","key":"a","checkboxDisabled":"true","children":[{"label":"只因寶","key":"ji"},{"label":"每位謝寶","key":"ci"}]},{"label":"早安","key":"b","children":void 0}]} )
 onBeforeMount(async () => {
     try {
         const response = await axios.get('/Get');
@@ -67,10 +53,11 @@ onBeforeMount(async () => {
 .main-page {
     height: calc(100vh - 45px);
     background-color: rgb(42, 42, 42);
+
 }
-
-.menu-list {background-color: rgb(36, 9, 81)}
-
+.n-tree {
+    font-size: 3em;
+}
 
 .page-header {
     font-size: 16px;
