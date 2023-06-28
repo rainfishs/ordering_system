@@ -19,10 +19,10 @@
                         <n-card :title="meal.name" header-style="font-size:30px">
                             <div v-for="option in meal.options">
                                 {{ option.name }}
-                                <n-checkbox-group v-if="option.type === 'checkbox'" v-model:value="meal.value">
+                                <n-checkbox-group v-if="option.type === 'checkbox'" v-model:value="meal.addition">
                                     <n-checkbox v-for="item in option.items" :value="item" :label="item" />
                                 </n-checkbox-group>
-                                <n-radio-group v-else v-model:value="option.value">
+                                <n-radio-group v-else v-model:value="meal[option.name]">
                                     <n-radio v-for="item in option.items" :value="item" :label="item" />
                                 </n-radio-group>
                             </div>
