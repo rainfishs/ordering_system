@@ -15,18 +15,25 @@
                 </n-grid>
                 <n-divider>在下面進行調整</n-divider>
                 <n-grid cols="1 600:2 1200:3 1600:4" x-gap="10" y-gap="20">
-                    <n-grid-item v-for="meal in chosenMeal">
+                    <n-grid-item v-for="(meal,index) in chosenMeal">
                         <n-card :title="meal.name" header-style="font-size:30px">
                             <div v-for="option in meal.options">
                                 {{ option.name }}
                                 <n-checkbox-group v-if="option.type === 'checkbox'" v-model:value="meal.value">
-                                        <n-checkbox v-for="item in option.items" :value="item" :label="item" />
+                                    <n-checkbox v-for="item in option.items" :value="item" :label="item" />
                                 </n-checkbox-group>
                                 <n-radio-group v-else v-model:value="option.value">
-                                        <n-radio v-for="item in option.items" :value="item" :label="item" />
+                                    <n-radio v-for="item in option.items" :value="item" :label="item" />
                                 </n-radio-group>
                             </div>
                             {{ meal }}
+                            <template #header-extra>
+                                <n-button @click="chosenMeal.splice(index,1)" text style="font-size: 24px">
+                                    <n-icon>
+                                        <trash-alt />
+                                    </n-icon>
+                                </n-button>
+                            </template>
                         </n-card>
                     </n-grid-item>
                 </n-grid>
@@ -43,9 +50,9 @@
 <script setup>
 import axios from "axios";
 import { onBeforeMount, reactive, toRaw, ref } from "vue";
-import { NRadioGroup,NRadio,NCheckboxGroup, NCheckbox, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NSpace } from 'naive-ui'
+import { NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NButton , NIcon } from 'naive-ui'
+import {TrashAlt} from '@vicons/fa'
 
-const gg = ref({ a: null })
 const chosenMeal = ref([])
 const resetmenubutton = ref(false)
 
