@@ -15,18 +15,19 @@
                 </n-grid>
                 <n-divider>在下面進行調整</n-divider>
                 <n-grid cols="1 600:2 1200:3 1600:4" x-gap="10" y-gap="20">
-                    <n-grid-item v-for="(meal,index) in chosenMeal">
-                        <n-card :title="meal.name" header-style="font-size:30px">
+                    <n-grid-item v-for="(meal,index) in chosenMeal" >
+                        <n-card :title="meal.name" header-style="font-size:30px" content-style="font-size:26px">
                             <div v-for="option in meal.options">
                                 {{ option.name }}
                                 <n-checkbox-group v-if="option.type === 'checkbox'" v-model:value="meal.addition">
-                                    <n-checkbox v-for="item in option.items" :value="item" :label="item" />
+                                    <n-checkbox v-for="item in option.items" :value="item" :label="item" style="font-size: 26px;"/>
                                 </n-checkbox-group>
                                 <n-radio-group v-else v-model:value="meal[option.name]">
-                                    <n-radio v-for="item in option.items" :value="item" :label="item" />
+                                    .
+                                    <n-radio v-for="item in option.items" :value="item" :label="item" style="font-size: 26px;" />
                                 </n-radio-group>
                             </div>
-                            {{ meal }}
+                            <!--{{ meal }}-->
                             <template #header-extra>
                                 <n-button @click="chosenMeal.splice(index,1)" text style="font-size: 24px">
                                     <n-icon>
