@@ -5,12 +5,19 @@
                 <span>點餐系統 v0.1</span>
             </n-layout-header>
             <NLayoutContent class="main-page">
-                <n-grid cols="2 400:3 600:4">
-                    <n-grid-item>
-                    <n-tree block-line :data="menu.value" checkable expand-on-click selectable />
-                </n-grid-item>
+
+                    
+
+                <n-grid cols="1 600:2 1200:3 1600:4" x-gap="20" y-gap="20">
+                    
+                    <n-grid-item v-for="cate in Menu.categories">
+                        <n-card :title="cate.cat">
+                            <n-menu v-if="resetmenubutton" :options="reformattedArray(cate)" />
+                            <n-menu v-else :options="reformattedArray(cate)" @update:value="handleUpdateValue"/>
+                        </n-card>
+                    </n-grid-item>
+                    
                 </n-grid>
-                {{ menu }}
             </NLayoutContent>
             <n-layout-footer class="page-footer">
                 Footer Footer Footer
@@ -21,16 +28,99 @@
 
 <script setup>
 import axios from "axios";
-import { onBeforeMount, reactive } from "vue";
-import { NConfigProvider, darkTheme, NGrid, NGridItem, NTree, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCollapse, NCollapseItem } from 'naive-ui'
+import { onBeforeMount, reactive, toRaw, ref } from "vue";
+import { NSwitch, NSkeleton, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard,NSpace } from 'naive-ui'
 
+const resetmenubutton = ref(false)
 
+const handleUpdateValue = (key) => {
+    console.log(key);
+    setTimeout(()=>{
+        resetmenubutton.value= true
+        setTimeout(()=>{
+            resetmenubutton.value = false
+        },1)
+    },500)
+}
 
-const menu = reactive({value: [{"label":"漢堡","key":"a","checkboxDisabled":"true","children":[{"label":"只因寶","key":"ji"},{"label":"每位謝寶","key":"ci"}]},{"label":"早安","key":"b","children":void 0}]} )
+const reformattedArray = (cate) => {
+    const newarray = toRaw(cate).items.map((obj) => {
+        var rObj = {};
+        rObj["label"] = rObj["key"] = obj.name;
+        return rObj;
+    });
+    return newarray;
+}
+
+const Menu = reactive({
+    categories: [
+        {
+            cat: "主食", items: [
+                {
+                    name: '鐵板麵', options: [
+                        { name: "口味", type: "radio", items: ["黑胡椒", "蘑菇", "綜合"] },
+                        { name: "加點", type: "checkbox", items: ["加麵", "加蛋"] }
+                    ]
+                },
+                {
+                    name: '白醬', options: [
+                        { name: "飯/麵", type: "radio", items: ["燉飯", "義大利麵"] },
+                        { name: "加點", type: "checkbox", items: ["焗烤", "(焗烤)加更多起司"] }
+                    ]
+                },
+            ]
+        },
+        {
+            cat: "點心", items: [{
+                name: '薯條', options: [
+                    { name: "口味", type: "radio", items: ["一般", "黃金地瓜"] },
+                    { name: "大小", type: "radio", items: ["大包", "小包"] },
+                    { name: "調味", type: "checkbox", items: ["胡椒鹽", "梅粉", "辣椒粉"] }
+                ]
+            }]
+        },
+        {
+            cat: "點心2", items: [{
+                name: '薯條', options: [
+                    { name: "口味", type: "radio", items: ["一般", "黃金地瓜"] },
+                    { name: "大小", type: "radio", items: ["大包", "小包"] },
+                    { name: "調味", type: "checkbox", items: ["胡椒鹽", "梅粉", "辣椒粉"] }
+                ]
+            }]
+        },
+        {
+            cat: "點心3", items: [{
+                name: '薯條', options: [
+                    { name: "口味", type: "radio", items: ["一般", "黃金地瓜"] },
+                    { name: "大小", type: "radio", items: ["大包", "小包"] },
+                    { name: "調味", type: "checkbox", items: ["胡椒鹽", "梅粉", "辣椒粉"] }
+                ]
+            }]
+        },
+        {
+            cat: "more點心", items: [{
+                name: '薯條', options: [
+                    { name: "口味", type: "radio", items: ["一般", "黃金地瓜"] },
+                    { name: "大小", type: "radio", items: ["大包", "小包"] },
+                    { name: "調味", type: "checkbox", items: ["胡椒鹽", "梅粉", "辣椒粉"] }
+                ]
+            }]
+        },
+        {
+            cat: "摸多點心", items: [{
+                name: '薯條', options: [
+                    { name: "口味", type: "radio", items: ["一般", "黃金地瓜"] },
+                    { name: "大小", type: "radio", items: ["大包", "小包"] },
+                    { name: "調味", type: "checkbox", items: ["胡椒鹽", "梅粉", "辣椒粉"] }
+                ]
+            }]
+        }
+    ]
+})
 onBeforeMount(async () => {
     try {
         const response = await axios.get('/Get');
-        menu.value = response.data
+        Menu.categories = response.data
     } catch (error) {
         console.error(error);
     }
@@ -52,11 +142,11 @@ onBeforeMount(async () => {
 
 .main-page {
     height: calc(100vh - 45px);
-    background-color: rgb(42, 42, 42);
 
 }
-.n-tree {
-    font-size: 3em;
+
+.n-menu {
+    font-size: 1.5em;
 }
 
 .page-header {

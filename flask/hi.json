@@ -1,1 +1,63 @@
-{"firstName": "Fred", "lastName": "Flintstone"}
+[
+        {
+            "cat": "主食", "items": [
+                {
+                    "name": "鐵板麵", "options": [
+                        { "name": "口味", "type": "radio", "items": ["黑胡椒", "蘑菇", "綜合"] },
+                        { "name": "加點", "type": "checkbox", "items": ["加麵", "加蛋"] }
+                    ]
+                },
+                {
+                    "name": "白醬", "options": [
+                        { "name": "飯/麵", "type": "radio", "items": ["燉飯", "義大利麵"] },
+                        { "name": "加點", "type": "checkbox", "items": ["焗烤", "(焗烤)加更多起司"] }
+                    ]
+                },
+            ]
+        },
+        {
+            "cat": "點心", "items": [{
+                "name": "薯條", "options": [
+                    { "name": "口味", "type": "radio", "items": ["一般", "黃金地瓜"] },
+                    { "name": "大小", "type": "radio", "items": ["大包", "小包"] },
+                    { "name": "調味", "type": "checkbox", "items": ["胡椒鹽", "梅粉", "辣椒粉"] }
+                ]
+            }]
+        },
+        {
+            "cat": "點心2", "items": [{
+                "name": "薯條", "options": [
+                    { "name": "口味", "type": "radio", "items": ["一般", "黃金地瓜"] },
+                    { "name": "大小", "type": "radio", "items": ["大包", "小包"] },
+                    { "name": "調味", "type": "checkbox", "items": ["胡椒鹽", "梅粉", "辣椒粉"] }
+                ]
+            }]
+        },
+        {
+            "cat": "點心3", "items": [{
+                "name": "薯條", "options": [
+                    { "name": "口味", "type": "radio", "items": ["一般", "黃金地瓜"] },
+                    { "name": "大小", "type": "radio", "items": ["大包", "小包"] },
+                    { "name": "調味", "type": "checkbox", "items": ["胡椒鹽", "梅粉", "辣椒粉"] }
+                ]
+            }]
+        },
+        {
+            "cat": "more點心", "items": [{
+                "name": "薯條", "options": [
+                    { "name": "口味", "type": "radio", "items": ["一般", "黃金地瓜"] },
+                    { "name": "大小", "type": "radio", "items": ["大包", "小包"] },
+                    { "name": "調味", "type": "checkbox", "items": ["胡椒鹽", "梅粉", "辣椒粉"] }
+                ]
+            }]
+        },
+        {
+            "cat": "摸多點心", "items": [{
+                "name": "薯條", "options": [
+                    { "name": "口味", "type": "radio", "items": ["一般", "黃金地瓜"] },
+                    { "name": "大小", "type": "radio", "items": ["大包", "小包"] },
+                    { "name": "調味", "type": "checkbox", "items": ["胡椒鹽", "梅粉", "辣椒粉"] }
+                ]
+            }]
+        }
+    ]
