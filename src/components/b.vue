@@ -14,15 +14,23 @@
                     </n-grid-item>
                 </n-grid>
                 <n-divider>在下面進行調整</n-divider>
-                <n-grid cols="1 600:2 1200:3 1600:4" x-gap="20" y-gap="20">
-                    <n-grid-item v-for="cate in Menu.categories">
-                        <n-card :title="cate.cat" header-style="font-size:30px">
-                            <n-menu v-if="resetmenubutton" :options="reformattedArray(cate)" />
-                            <n-menu v-else :options="reformattedArray(cate)" @update:value="handleUpdateValue" />
+                <n-grid cols="1 600:2 1200:3 1600:4" x-gap="10" y-gap="20">
+                    <n-grid-item v-for="meal in chosenMeal">
+                        <n-card :title="meal.name" header-style="font-size:30px">
+                            <div v-for="option in meal.options">
+                                {{ option.name }}
+                                <n-checkbox-group v-if="option.type === 'checkbox'" v-model:value="meal.value">
+                                        <n-checkbox v-for="item in option.items" :value="item" :label="item" />
+                                </n-checkbox-group>
+                                <n-radio-group v-else v-model:value="option.value">
+                                        <n-radio v-for="item in option.items" :value="item" :label="item" />
+                                </n-radio-group>
+                            </div>
+                            {{ meal }}
                         </n-card>
                     </n-grid-item>
                 </n-grid>
-                
+
 
             </NLayoutContent>
             <n-layout-footer class="page-footer">
@@ -35,18 +43,35 @@
 <script setup>
 import axios from "axios";
 import { onBeforeMount, reactive, toRaw, ref } from "vue";
-import { NSwitch, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NSpace } from 'naive-ui'
+import { NRadioGroup,NRadio,NCheckboxGroup, NCheckbox, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NSpace } from 'naive-ui'
 
+const gg = ref({ a: null })
+const chosenMeal = ref([])
 const resetmenubutton = ref(false)
+
+const getoptions = (key) => {
+    //console.log(Menu.categories);
+    for (let i = 0; i < Menu.categories.length; i++) {
+        for (let j = 0; j < Menu.categories[i].items.length; j++) {
+            if (Menu.categories[i].items[j].name === key) {
+                return Menu.categories[i].items[j]
+            }
+        }
+    }
+}
 
 const handleUpdateValue = (key) => {
     console.log(key);
+    console.log(getoptions(key));
+    chosenMeal.value.push(Object.assign({}, getoptions(key)))
+    console.log(chosenMeal.value);
     setTimeout(() => {
         resetmenubutton.value = true
         setTimeout(() => {
             resetmenubutton.value = false
         }, 1)
     }, 250)
+
 }
 
 const reformattedArray = (cate) => {
@@ -58,7 +83,7 @@ const reformattedArray = (cate) => {
     return newarray;
 }
 
-const Menu = reactive({
+const Menu = {
     categories: [
         {
             cat: "主食", items: [
@@ -71,7 +96,8 @@ const Menu = reactive({
                 {
                     name: '白醬', options: [
                         { name: "飯/麵", type: "radio", items: ["燉飯", "義大利麵"] },
-                        { name: "加點", type: "checkbox", items: ["焗烤", "(焗烤)加更多起司"] }
+                        { name: "加點", type: "checkbox", items: ["焗烤", "(焗烤)加更多起司"] },
+                        { name: "家", type: "checkbox", items: ["只因"] }
                     ]
                 },
             ]
@@ -103,26 +129,8 @@ const Menu = reactive({
                 ]
             }]
         },
-        {
-            cat: "more點心", items: [{
-                name: '薯條', options: [
-                    { name: "口味", type: "radio", items: ["一般", "黃金地瓜"] },
-                    { name: "大小", type: "radio", items: ["大包", "小包"] },
-                    { name: "調味", type: "checkbox", items: ["胡椒鹽", "梅粉", "辣椒粉"] }
-                ]
-            }]
-        },
-        {
-            cat: "摸多點心", items: [{
-                name: '薯條', options: [
-                    { name: "口味", type: "radio", items: ["一般", "黃金地瓜"] },
-                    { name: "大小", type: "radio", items: ["大包", "小包"] },
-                    { name: "調味", type: "checkbox", items: ["胡椒鹽", "梅粉", "辣椒粉"] }
-                ]
-            }]
-        }
     ]
-})
+}
 onBeforeMount(async () => {
     try {
         const response = await axios.get('/Get');
