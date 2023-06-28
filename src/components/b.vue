@@ -29,14 +29,21 @@
                                         style="font-size: 26px;" />
                                 </n-radio-group>
                             </div>
-                            <n-input-number v-model:value="meal['amount']" placeholder="數量" default-value="1" min="1" size="large" button-placement="both" style="width: 30%;text-align: center;float: right;" parse show-button/>
+                            <n-input-number v-model:value="meal['amount']" placeholder="數量" default-value="1" min="1"
+                                size="large" button-placement="both" style="width: 30%;text-align: center;float: right;"
+                                parse show-button />
                             <!--{{ meal }}-->
                             <template #header-extra>
-                                <n-button @click="chosenMeal.splice(index, 1)" text style="font-size: 24px">
-                                    <n-icon>
-                                        <trash-alt />
-                                    </n-icon>
-                                </n-button>
+                                <n-popover trigger="hover">
+                                    <template #trigger>
+                                        <n-button @click="chosenMeal.splice(index, 1)" text style="font-size: 24px">
+                                            <n-icon>
+                                                <trash-alt />
+                                            </n-icon>
+                                        </n-button>
+                                    </template>
+                                    <span style="font-size: 22px;">刪除此項目</span>
+                                </n-popover>
                             </template>
                         </n-card>
                     </n-grid-item>
@@ -54,7 +61,7 @@
 <script setup>
 import axios from "axios";
 import { onBeforeMount, reactive, toRaw, ref } from "vue";
-import { NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NButton, NIcon,NInputNumber } from 'naive-ui'
+import { NPopover, NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NButton, NIcon, NInputNumber } from 'naive-ui'
 import { TrashAlt } from '@vicons/fa'
 
 const chosenMeal = ref([])
@@ -177,6 +184,7 @@ onBeforeMount(async () => {
 .page-header {
     font-size: 16px;
     background-color: rgb(31, 31, 31);
+    
 }
 
 .page-footer {
@@ -184,5 +192,6 @@ onBeforeMount(async () => {
     background: linear-gradient(to right, rgb(97, 0, 142), rgb(18, 1, 130), rgb(97, 0, 142), rgb(18, 1, 130), rgb(97, 0, 142));
     background-size: 200% 100%;
     animation: footer-changer 3s linear infinite;
+    text-align: right;
 }
 </style>
