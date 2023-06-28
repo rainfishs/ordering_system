@@ -5,19 +5,25 @@
                 <span>點餐系統 v0.1</span>
             </n-layout-header>
             <NLayoutContent class="main-page">
-
-                    
-
                 <n-grid cols="1 600:2 1200:3 1600:4" x-gap="20" y-gap="20">
-                    
                     <n-grid-item v-for="cate in Menu.categories">
-                        <n-card :title="cate.cat">
+                        <n-card :title="cate.cat" header-style="font-size:30px">
                             <n-menu v-if="resetmenubutton" :options="reformattedArray(cate)" />
-                            <n-menu v-else :options="reformattedArray(cate)" @update:value="handleUpdateValue"/>
+                            <n-menu v-else :options="reformattedArray(cate)" @update:value="handleUpdateValue" />
                         </n-card>
                     </n-grid-item>
-                    
                 </n-grid>
+                <n-divider>在下面進行調整</n-divider>
+                <n-grid cols="1 600:2 1200:3 1600:4" x-gap="20" y-gap="20">
+                    <n-grid-item v-for="cate in Menu.categories">
+                        <n-card :title="cate.cat" header-style="font-size:30px">
+                            <n-menu v-if="resetmenubutton" :options="reformattedArray(cate)" />
+                            <n-menu v-else :options="reformattedArray(cate)" @update:value="handleUpdateValue" />
+                        </n-card>
+                    </n-grid-item>
+                </n-grid>
+                
+
             </NLayoutContent>
             <n-layout-footer class="page-footer">
                 Footer Footer Footer
@@ -29,18 +35,18 @@
 <script setup>
 import axios from "axios";
 import { onBeforeMount, reactive, toRaw, ref } from "vue";
-import { NSwitch, NSkeleton, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard,NSpace } from 'naive-ui'
+import { NSwitch, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NSpace } from 'naive-ui'
 
 const resetmenubutton = ref(false)
 
 const handleUpdateValue = (key) => {
     console.log(key);
-    setTimeout(()=>{
-        resetmenubutton.value= true
-        setTimeout(()=>{
+    setTimeout(() => {
+        resetmenubutton.value = true
+        setTimeout(() => {
             resetmenubutton.value = false
-        },1)
-    },500)
+        }, 1)
+    }, 250)
 }
 
 const reformattedArray = (cate) => {
@@ -146,7 +152,7 @@ onBeforeMount(async () => {
 }
 
 .n-menu {
-    font-size: 1.5em;
+    font-size: 2em;
 }
 
 .page-header {
