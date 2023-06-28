@@ -15,21 +15,24 @@
                 </n-grid>
                 <n-divider>在下面進行調整</n-divider>
                 <n-grid cols="1 600:2 1200:3 1600:4" x-gap="10" y-gap="20">
-                    <n-grid-item v-for="(meal,index) in chosenMeal" >
+                    <n-grid-item v-for="(meal, index) in chosenMeal">
                         <n-card :title="meal.name" header-style="font-size:30px" content-style="font-size:26px">
                             <div v-for="option in meal.options">
                                 {{ option.name }}
-                                <n-checkbox-group v-if="option.type === 'checkbox'" v-model:value="meal.addition">
-                                    <n-checkbox v-for="item in option.items" :value="item" :label="item" style="font-size: 26px;"/>
+                                <n-checkbox-group v-if="option.type === 'checkbox'" v-model:value="meal['addition']">
+                                    <n-checkbox v-for="item in option.items" :value="item" :label="item"
+                                        style="font-size: 26px;" />
                                 </n-checkbox-group>
                                 <n-radio-group v-else v-model:value="meal[option.name]">
                                     .
-                                    <n-radio v-for="item in option.items" :value="item" :label="item" style="font-size: 26px;" />
+                                    <n-radio v-for="item in option.items" :value="item" :label="item"
+                                        style="font-size: 26px;" />
                                 </n-radio-group>
                             </div>
+                            <n-input-number v-model:value="meal['amount']" placeholder="數量" default-value="1" min="1" size="large" button-placement="both" style="width: 30%;text-align: center;float: right;" parse show-button/>
                             <!--{{ meal }}-->
                             <template #header-extra>
-                                <n-button @click="chosenMeal.splice(index,1)" text style="font-size: 24px">
+                                <n-button @click="chosenMeal.splice(index, 1)" text style="font-size: 24px">
                                     <n-icon>
                                         <trash-alt />
                                     </n-icon>
@@ -51,8 +54,8 @@
 <script setup>
 import axios from "axios";
 import { onBeforeMount, reactive, toRaw, ref } from "vue";
-import { NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NButton , NIcon } from 'naive-ui'
-import {TrashAlt} from '@vicons/fa'
+import { NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NButton, NIcon,NInputNumber } from 'naive-ui'
+import { TrashAlt } from '@vicons/fa'
 
 const chosenMeal = ref([])
 const resetmenubutton = ref(false)
