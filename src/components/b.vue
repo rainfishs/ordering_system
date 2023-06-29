@@ -2,7 +2,7 @@
     <n-config-provider :theme=darkTheme>
         <n-layout>
             <n-layout-header class="page-header">
-                <span>綜合業務組AD106點餐系統(統計午餐系統) v0.1</span>
+                <span>綜合業務組AD106點餐系統(統計午餐系統) v0.13</span>
             </n-layout-header>
             <NLayoutContent class="main-page">
                 <n-grid cols="1 600:2 1200:3 1600:4" x-gap="20" y-gap="20">
@@ -156,15 +156,15 @@ const Menu = {
         },
     ]
 }
-onBeforeMount(async () => {
+const getMenu = async() => {
     try {
         const response = await axios.get('/Get');
         Menu.categories = response.data
     } catch (error) {
         console.error(error);
     }
-})
-
+}
+getMenu()
 </script>
 
 
