@@ -15,11 +15,12 @@
                 </n-grid>
 
 
-                <n-divider title-placement="left">
+                <n-divider title-placement="right">
 
-                    <n-select v-model:value="stuff" placeholder="輸入或選擇人員" :options="stuffs" style="width: 150px;"
-                        filterable tag />
+                    
                     <n-image height="50" src="/GetImgb" preview-src="/GetImg" show-toolbar-tooltip />
+                    <n-select v-model:value="stuff" placeholder="輸入或選擇人員" :options="stuffs" style="width: 150px; padding-left: 25px;"
+                        filterable tag />
                 </n-divider>
 
 
