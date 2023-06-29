@@ -17,10 +17,11 @@
 
                 <n-divider title-placement="right">
 
-                    
+
                     <n-image height="50" src="/GetImgb" preview-src="/GetImg" show-toolbar-tooltip />
-                    <n-select v-model:value="stuff" placeholder="輸入或選擇人員" :options="stuffs" style="width: 150px; padding-left: 25px;"
-                        filterable tag />
+                    <n-select v-model:value="stuff" placeholder="輸入或選擇人員" :options="stuffs"
+                        style="width: 150px; padding-left: 25px;" filterable tag />
+
                 </n-divider>
 
 
@@ -59,7 +60,7 @@
                         </n-card>
                     </n-grid-item>
                 </n-grid>
-                <n-button @click="sendMeal" icon-placement="right" color="#ff69b4"
+                <n-button @click="showModal = true" icon-placement="right" color="#ff69b4"
                     style="float: right; margin: 20px; font-size: 20px;">
                     <span>傳送</span>
                     <template #icon>
@@ -69,6 +70,11 @@
                     </template>
                 </n-button>
 
+                <n-modal v-model:show="showModal" preset="dialog" title="確認?"
+                    positive-text="確認" negative-text="取消" @positive-click="sendMeal">
+                    <div>人員: {{ stuff }}</div>
+                    <div>餐點數量: {{ chosenMeal.length }}</div>
+                </n-modal>
             </NLayoutContent>
             <n-layout-footer class="page-footer">
                 made by rainfishs
@@ -80,12 +86,14 @@
 <script setup>
 import axios from "axios";
 import { onBeforeMount, reactive, toRaw, ref } from "vue";
-import { NSelect, NPopover, NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NButton, NIcon, NInputNumber, NImage } from 'naive-ui'
+import { useMessage,NModal,NSelect, NPopover, NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NButton, NIcon, NInputNumber, NImage } from 'naive-ui'
 import { TrashAlt } from '@vicons/fa'
 import { Send } from '@vicons/ionicons5'
 const chosenMeal = ref([])
 const stuff = ref(null)
+const showModal = ref(false)
 const resetmenubutton = ref(false)
+const message = useMessage();
 
 const getoptions = (key) => {
     //console.log(Menu.categories);
@@ -125,11 +133,21 @@ const reformattedArray = (cate) => {
 }
 
 const sendMeal = () => {
-    console.log(toRaw(chosenMeal.value));
-    console.log(toRaw(stuff.value));
+    const m = toRaw(chosenMeal.value)
+    const s = toRaw(stuff.value)
+    if(m.length===0){
+        message.error("未選取任何餐點")
+    }
+    if(s === null){
+        message.error("未選取人員")
+    }
+        
+    
+    console.log(m);
+    console.log(s);
 }
 
-const Menu = {
+const Menu = reactive({
     categories: [
         {
             cat: "主食", items: [
@@ -176,7 +194,7 @@ const Menu = {
             }]
         },
     ]
-}
+})
 const getMenu = async () => {
     try {
         const response = await axios.get('/GetMenu');
@@ -192,11 +210,11 @@ const getStuffs = async () => {
     try {
         const response = await axios.get('/GetStuffs');
         stuffs.value = response.data
-        
+
     } catch (error) {
         console.error(error);
     }
-    finally{
+    finally {
         stuffs.value = stuffs.value.map((obj) => {
             var rObj = {};
             rObj["label"] = rObj["value"] = obj;
