@@ -25,24 +25,6 @@
             }]
         },
         {
-            "cat": "點心2", "items": [{
-                "name": "薯條", "options": [
-                    { "name": "口味", "type": "radio", "items": ["一般", "黃金地瓜"] },
-                    { "name": "大小", "type": "radio", "items": ["大包", "小包"] },
-                    { "name": "調味", "type": "checkbox", "items": ["胡椒鹽", "梅粉", "辣椒粉"] }
-                ]
-            }]
-        },
-        {
-            "cat": "點心3", "items": [{
-                "name": "薯條", "options": [
-                    { "name": "口味", "type": "radio", "items": ["一般", "黃金地瓜"] },
-                    { "name": "大小", "type": "radio", "items": ["大包", "小包"] },
-                    { "name": "調味", "type": "checkbox", "items": ["胡椒鹽", "梅粉", "辣椒粉"] }
-                ]
-            }]
-        },
-        {
             "cat": "more點心", "items": [{
                 "name": "薯條", "options": [
                     { "name": "口味", "type": "radio", "items": ["一般", "黃金地瓜"] },
@@ -52,12 +34,14 @@
             }]
         },
         {
-            "cat": "摸多點心", "items": [{
-                "name": "薯條", "options": [
-                    { "name": "口味", "type": "radio", "items": ["一般", "黃金地瓜"] },
-                    { "name": "大小", "type": "radio", "items": ["大包", "小包"] },
-                    { "name": "調味", "type": "checkbox", "items": ["胡椒鹽", "梅粉", "辣椒粉"] }
-                ]
-            }]
+            "cat": "漢堡", "items": [
+				{"name": "照燒里肌蛋堡", "options": [{ "name": "加", "type": "checkbox", "items": ["起司"] }]},
+				{"name": "藍帶G排蛋堡", "options": [{ "name": "加", "type": "checkbox", "items": ["起司"] }]},
+				{"name": "猴頭菇排蛋堡", "options": [{ "name": "加", "type": "checkbox", "items": ["起司"] }]},
+				{"name": "牛蒡蔬排蛋堡", "options": [{ "name": "加", "type": "checkbox", "items": ["起司"] }]},
+				{"name": "燒肉風味蛋堡", "options": [{ "name": "加", "type": "checkbox", "items": ["起司"] }]},
+				{"name": "大香G排蛋堡", "options": [{ "name": "加", "type": "checkbox", "items": ["起司"] }]},
+				{"name": "黑胡椒酥排蛋堡", "options": [{ "name": "加", "type": "checkbox", "items": ["起司"] }]}
+			]
         }
     ]

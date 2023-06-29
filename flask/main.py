@@ -4,24 +4,25 @@ app = Flask(__name__)
 @app.route("/")
 def hello():
     return render_template('index.html')
-@app.route('/Get', methods=['GET'])
+
+@app.route('/GetMenu', methods=['GET'])
 def getter():
-    with open('hi.json','r',encoding='UTF-8')as f:
+    with open(r'today\Menu.json','r',encoding='UTF-8')as f:
         return json.load(f)
+
+@app.route('/GetImg', methods=['GET'])
+def getimg():
+    return send_file(r'today\menu.jpg',mimetype='image/gif')
+
+@app.route('/GetImgb', methods=['GET'])
+def getimgb():
+    return send_file(r'today\button.png',mimetype='image/gif')
 
 @app.route('/Set', methods=['POST'])
 def setter():
     with open('hi.json','w',encoding='UTF-8')as f:
         json.dump(request.json,f)
     return jsonify(result='OK')
-
-@app.route('/GetImg', methods=['GET'])
-def getimg():
-    return send_file('menu.jpg',mimetype='image/gif')
-
-@app.route('/GetImgb', methods=['GET'])
-def getimgb():
-    return send_file('button1.png',mimetype='image/gif')
 
 if __name__ == '__main__':
     os.system('copy.bat')

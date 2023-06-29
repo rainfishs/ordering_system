@@ -15,9 +15,9 @@
                 </n-grid>
 
 
-                <n-divider title-placement="right"><n-image height="50"
-                    src="/GetImgb"
-                    preview-src="/GetImg" show-toolbar-tooltip /></n-divider>
+                <n-divider title-placement="right"><n-image height="50" src="/GetImgb" preview-src="/GetImg" show-toolbar-tooltip />
+
+                </n-divider>
 
 
 
@@ -68,7 +68,7 @@
 <script setup>
 import axios from "axios";
 import { onBeforeMount, reactive, toRaw, ref } from "vue";
-import { NPopover, NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NButton, NIcon, NInputNumber,NImage} from 'naive-ui'
+import { NPopover, NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NButton, NIcon, NInputNumber, NImage } from 'naive-ui'
 import { TrashAlt } from '@vicons/fa'
 
 const chosenMeal = ref([])
@@ -156,9 +156,9 @@ const Menu = {
         },
     ]
 }
-const getMenu = async() => {
+const getMenu = async () => {
     try {
-        const response = await axios.get('/Get');
+        const response = await axios.get('/GetMenu');
         Menu.categories = response.data
     } catch (error) {
         console.error(error);
