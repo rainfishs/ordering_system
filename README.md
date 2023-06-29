@@ -1,7 +1,7 @@
-# Vue 3 + Vite
+# 組內訂餐網頁程式
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+用來統整誰吃了啥，減少溝通成本。
 
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## 安裝
+- 你只是要運行我的成果，在 `./flask` 路徑下 `pip install -r requirements.txt`，運行 `main.py` 即可。
+- 如果你要開發 `yarn install`  安裝依賴。`yarn build` 完成以後,運行 `./flask/main.py` 時，會執行 `copy.bat` 將最新建構於 `./dist` 的文件copy到flask對應路徑裡並啟動flask。
