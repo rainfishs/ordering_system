@@ -6,8 +6,13 @@ def hello():
     return render_template('index.html')
 
 @app.route('/GetMenu', methods=['GET'])
-def getter():
+def getmenu():
     with open(r'today\Menu.json','r',encoding='UTF-8')as f:
+        return json.load(f)
+
+@app.route('/GetStuffs', methods=['GET'])
+def getstuffs():
+    with open(r'data\Stuffs.json','r',encoding='UTF-8')as f:
         return json.load(f)
 
 @app.route('/GetImg', methods=['GET'])
@@ -16,7 +21,7 @@ def getimg():
 
 @app.route('/GetImgb', methods=['GET'])
 def getimgb():
-    return send_file(r'today\button.png',mimetype='image/gif')
+    return send_file(r'data\button.png',mimetype='image/gif')
 
 @app.route('/Set', methods=['POST'])
 def setter():

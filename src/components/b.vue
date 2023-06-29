@@ -15,8 +15,11 @@
                 </n-grid>
 
 
-                <n-divider title-placement="right"><n-image height="50" src="/GetImgb" preview-src="/GetImg" show-toolbar-tooltip />
+                <n-divider title-placement="left">
 
+                    <n-select v-model:value="stuff" placeholder="輸入或選擇人員" :options="stuffs" style="width: 150px;"
+                        filterable tag />
+                    <n-image height="50" src="/GetImgb" preview-src="/GetImg" show-toolbar-tooltip />
                 </n-divider>
 
 
@@ -36,9 +39,9 @@
                                         style="font-size: 26px;" />
                                 </n-radio-group>
                             </div>
-                            <n-input-number v-model:value="meal['amount']" placeholder="數量" default-value="1" min="1"
-                                size="large" button-placement="both" style="width: 30%;text-align: center;float: right;"
-                                parse show-button />
+                            <n-input-number v-model:value="meal['amount']" placeholder="數量" min="1" size="large"
+                                button-placement="both" style="width: 30%;text-align: center;float: right;" allow-input
+                                show-button />
                             <!--{{ meal }}-->
                             <template #header-extra>
                                 <n-popover trigger="hover">
@@ -55,7 +58,15 @@
                         </n-card>
                     </n-grid-item>
                 </n-grid>
-
+                <n-button @click="sendMeal" icon-placement="right" color="#ff69b4"
+                    style="float: right; margin: 20px; font-size: 20px;">
+                    <span>傳送</span>
+                    <template #icon>
+                        <n-icon>
+                            <send />
+                        </n-icon>
+                    </template>
+                </n-button>
 
             </NLayoutContent>
             <n-layout-footer class="page-footer">
@@ -68,10 +79,11 @@
 <script setup>
 import axios from "axios";
 import { onBeforeMount, reactive, toRaw, ref } from "vue";
-import { NPopover, NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NButton, NIcon, NInputNumber, NImage } from 'naive-ui'
+import { NSelect, NPopover, NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NButton, NIcon, NInputNumber, NImage } from 'naive-ui'
 import { TrashAlt } from '@vicons/fa'
-
+import { Send } from '@vicons/ionicons5'
 const chosenMeal = ref([])
+const stuff = ref(null)
 const resetmenubutton = ref(false)
 
 const getoptions = (key) => {
@@ -88,7 +100,10 @@ const getoptions = (key) => {
 const handleUpdateValue = (key) => {
     //console.log(key);
     //console.log(getoptions(key));
-    chosenMeal.value.push(Object.assign({}, getoptions(key)))
+    let obj = Object.assign({}, getoptions(key))
+    obj['amount'] = 1
+    chosenMeal.value.push(obj)
+
     //console.log(chosenMeal.value);
     setTimeout(() => {
         resetmenubutton.value = true
@@ -106,6 +121,11 @@ const reformattedArray = (cate) => {
         return rObj;
     });
     return newarray;
+}
+
+const sendMeal = () => {
+    console.log(toRaw(chosenMeal.value));
+    console.log(toRaw(stuff.value));
 }
 
 const Menu = {
@@ -165,6 +185,28 @@ const getMenu = async () => {
     }
 }
 getMenu()
+const stuffs = ref([])
+
+const getStuffs = async () => {
+    try {
+        const response = await axios.get('/GetStuffs');
+        stuffs.value = response.data
+        
+    } catch (error) {
+        console.error(error);
+    }
+    finally{
+        stuffs.value = stuffs.value.map((obj) => {
+            var rObj = {};
+            rObj["label"] = rObj["value"] = obj;
+            return rObj;
+        });
+    }
+}
+getStuffs()
+
+
+
 </script>
 
 
