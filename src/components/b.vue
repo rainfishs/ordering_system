@@ -2,7 +2,7 @@
     <n-config-provider :theme=darkTheme>
         <n-layout>
             <n-layout-header class="page-header">
-                <span>點餐系統 v0.1</span>
+                <span>綜合業務組AD106點餐系統(統計午餐系統) v0.1</span>
             </n-layout-header>
             <NLayoutContent class="main-page">
                 <n-grid cols="1 600:2 1200:3 1600:4" x-gap="20" y-gap="20">
@@ -13,7 +13,14 @@
                         </n-card>
                     </n-grid-item>
                 </n-grid>
-                <n-divider>在下面進行調整</n-divider>
+
+
+                <n-divider title-placement="right"><n-image height="50"
+                    src="/GetImgb"
+                    preview-src="/GetImg" show-toolbar-tooltip /></n-divider>
+
+
+
                 <n-grid cols="1 600:2 1200:3 1600:4" x-gap="10" y-gap="20">
                     <n-grid-item v-for="(meal, index) in chosenMeal">
                         <n-card :title="meal.name" header-style="font-size:30px" content-style="font-size:26px">
@@ -52,7 +59,7 @@
 
             </NLayoutContent>
             <n-layout-footer class="page-footer">
-                Footer Footer Footer
+                made by rainfishs
             </n-layout-footer>
         </n-layout>
     </n-config-provider>
@@ -61,7 +68,7 @@
 <script setup>
 import axios from "axios";
 import { onBeforeMount, reactive, toRaw, ref } from "vue";
-import { NPopover, NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NButton, NIcon, NInputNumber } from 'naive-ui'
+import { NPopover, NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NButton, NIcon, NInputNumber,NImage} from 'naive-ui'
 import { TrashAlt } from '@vicons/fa'
 
 const chosenMeal = ref([])
@@ -79,10 +86,10 @@ const getoptions = (key) => {
 }
 
 const handleUpdateValue = (key) => {
-    console.log(key);
-    console.log(getoptions(key));
+    //console.log(key);
+    //console.log(getoptions(key));
     chosenMeal.value.push(Object.assign({}, getoptions(key)))
-    console.log(chosenMeal.value);
+    //console.log(chosenMeal.value);
     setTimeout(() => {
         resetmenubutton.value = true
         setTimeout(() => {
@@ -184,7 +191,7 @@ onBeforeMount(async () => {
 .page-header {
     font-size: 16px;
     background-color: rgb(31, 31, 31);
-    
+
 }
 
 .page-footer {

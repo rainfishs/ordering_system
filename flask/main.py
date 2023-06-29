@@ -1,6 +1,5 @@
-from flask import Flask,request,render_template,jsonify,json
+from flask import Flask,request,render_template,jsonify,json,send_file
 import os
-
 app = Flask(__name__)
 @app.route("/")
 def hello():
@@ -16,7 +15,14 @@ def setter():
         json.dump(request.json,f)
     return jsonify(result='OK')
 
+@app.route('/GetImg', methods=['GET'])
+def getimg():
+    return send_file('menu.jpg',mimetype='image/gif')
+
+@app.route('/GetImgb', methods=['GET'])
+def getimgb():
+    return send_file('button1.png',mimetype='image/gif')
 
 if __name__ == '__main__':
     os.system('copy.bat')
-    app.run('0.0.0.0',debug=True,port=80)
+    app.run('0.0.0.0',debug=True,port=8080)
