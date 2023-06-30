@@ -8,8 +8,7 @@
 </style>
 
 <script setup>
-import B from './components/b.vue'
+import B from '../../components/b.vue'
 import {NMessageProvider} from 'naive-ui'
 
 </script>
-  

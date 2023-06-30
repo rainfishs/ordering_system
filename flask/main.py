@@ -5,6 +5,10 @@ app = Flask(__name__)
 def hello():
     return render_template('index.html')
 
+@app.route("/admin")
+def helloadmin():
+    return render_template('admin.html')
+
 @app.route('/GetMenu', methods=['GET'])
 def getmenu():
     with open(r'today\Menu.json','r',encoding='UTF-8')as f:
