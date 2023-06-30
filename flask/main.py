@@ -1,9 +1,17 @@
 from flask import Flask,request,render_template,jsonify,json,send_file
+from flask_socketio import SocketIO
 import os
 app = Flask(__name__)
+socketio = SocketIO(app)
+
 @app.route("/")
 def hello():
     return render_template('index.html')
+
+@app.route("/disconnect")
+def dis():
+    socketio.emit('received',{'data': 42})
+    return '123'
 
 @app.route("/admin")
 def helloadmin():
@@ -27,9 +35,9 @@ def getimg():
 def getimgb():
     return send_file(r'data\button.png',mimetype='image/gif')
 
-@app.route('/Set', methods=['POST'])
+@app.route('/Meal', methods=['POST'])
 def setter():
-    with open('hi.json','w',encoding='UTF-8')as f:
+    with open('today/Meals.json','a+',encoding='UTF-8')as f:
         json.dump(request.json,f)
     return jsonify(result='OK')
 

@@ -70,8 +70,8 @@
                     </template>
                 </n-button>
 
-                <n-modal v-model:show="showModal" preset="dialog" title="確認?"
-                    positive-text="確認" negative-text="取消" @positive-click="sendMeal">
+                <n-modal v-model:show="showModal" preset="dialog" title="確認?" positive-text="確認" negative-text="取消"
+                    @positive-click="sendMeal">
                     <div>人員: {{ stuff }}</div>
                     <div>餐點數量: {{ chosenMeal.length }}</div>
                 </n-modal>
@@ -86,7 +86,7 @@
 <script setup>
 import axios from "axios";
 import { onBeforeMount, reactive, toRaw, ref } from "vue";
-import { useMessage,NModal,NSelect, NPopover, NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NButton, NIcon, NInputNumber, NImage } from 'naive-ui'
+import { useMessage, NModal, NSelect, NPopover, NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NButton, NIcon, NInputNumber, NImage } from 'naive-ui'
 import { TrashAlt } from '@vicons/fa'
 import { Send } from '@vicons/ionicons5'
 const chosenMeal = ref([])
@@ -132,20 +132,7 @@ const reformattedArray = (cate) => {
     return newarray;
 }
 
-const sendMeal = () => {
-    const m = toRaw(chosenMeal.value)
-    const s = toRaw(stuff.value)
-    if(m.length===0){
-        message.error("未選取任何餐點")
-    }
-    if(s === null){
-        message.error("未選取人員")
-    }
-        
-    
-    console.log(m);
-    console.log(s);
-}
+
 
 const Menu = reactive({
     categories: [
@@ -223,6 +210,37 @@ const getStuffs = async () => {
     }
 }
 getStuffs()
+
+const sendMeal = async () => {
+    let m = toRaw(chosenMeal.value)
+    const s = toRaw(stuff.value)
+    if (m.length === 0) {
+        message.error("未選取任何餐點")
+    }
+    else if (s === null) {
+        message.error("未選取人員")
+    }
+    else {
+        m = m.map((value) => {
+            delete value['options']
+            return value
+        })
+        m = { meals: m, stuff: s }
+        console.log(m);
+        let req = ''
+        try {
+            req = await axios.post('/Meal', m, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        }
+        catch (error) {
+            console.error(error);
+        }
+        console.log(req);
+    }
+}
 
 
 

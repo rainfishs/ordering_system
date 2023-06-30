@@ -14,6 +14,7 @@
     "axios": "^1.4.0",
     "naive-ui": "^2.34.4",
     "p5": "^1.6.0",
+    "socket.io-client": "^4.7.1",
     "vue": "^3.2.47"
   },
   "devDependencies": {

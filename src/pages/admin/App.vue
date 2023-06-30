@@ -1,6 +1,6 @@
 <template>
     <n-message-provider>
-    <B/>
+    <A/>
     </n-message-provider>
 </template>
 
@@ -8,7 +8,7 @@
 </style>
 
 <script setup>
-import B from '../../components/b.vue'
+import A from '../../components/a.vue'
 import {NMessageProvider} from 'naive-ui'
 
 </script>
