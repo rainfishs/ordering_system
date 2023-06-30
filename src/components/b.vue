@@ -227,18 +227,18 @@ const sendMeal = async () => {
         })
         m = { meals: m, stuff: s }
         console.log(m);
-        let req = ''
         try {
-            req = await axios.post('/Meal', m, {
+            const req = await axios.post('/Meal', m, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
+            console.log(req);
         }
         catch (error) {
             console.error(error);
         }
-        console.log(req);
+        
     }
 }
 

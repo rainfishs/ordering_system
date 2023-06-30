@@ -8,11 +8,6 @@ socketio = SocketIO(app)
 def hello():
     return render_template('index.html')
 
-@app.route("/disconnect")
-def dis():
-    socketio.emit('received',{'data': 42})
-    return '123'
-
 @app.route("/admin")
 def helloadmin():
     return render_template('admin.html')
@@ -35,11 +30,26 @@ def getimg():
 def getimgb():
     return send_file(r'data\button.png',mimetype='image/gif')
 
+@app.route('/GetMeals', methods=['POST'])
+def getmeals():
+    with open(r'today\Meals.json','r',encoding='UTF-8') as f:
+        data = json.load(f)
+        socketio.emit('received',data)
+    return jsonify(result='OK')
+
 @app.route('/Meal', methods=['POST'])
 def setter():
-    with open('today/Meals.json','a+',encoding='UTF-8')as f:
-        json.dump(request.json,f)
+    with open(r'today\Meals.json','r+',encoding='UTF-8') as f:
+        data = json.load(f)
+        if(not isinstance(data,list)):
+            data = []
+        data.append(request.json)
+        print(data)
+        f.seek(0)
+        json.dump(data,f) 
+        socketio.emit('received',data)
     return jsonify(result='OK')
+
 
 if __name__ == '__main__':
     os.system('copy.bat')

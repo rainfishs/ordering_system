@@ -5,10 +5,10 @@
                 <span>綜合業務組AD106點餐系統(統計午餐系統) v0.13</span>
             </n-layout-header>
             <NLayoutContent class="main-page">
-                {{ connected  }}
+                {{ received }}
             </NLayoutContent>
             <n-layout-footer class="page-footer">
-               <span>made by rainfishs</span>
+                <span>made by rainfishs</span>
             </n-layout-footer>
         </n-layout>
     </n-config-provider>
@@ -16,12 +16,25 @@
 
 <script setup>
 import { state } from "../socket";
-import { computed } from "vue";
-import { NLayoutContent,NLayoutHeader,NLayoutFooter,NLayout,NConfigProvider,darkTheme } from "naive-ui";
-const connected = computed(()=>{
+import { computed, onMounted } from "vue";
+import { NLayoutContent, NLayoutHeader, NLayoutFooter, NLayout, NConfigProvider, darkTheme } from "naive-ui";
+import axios from "axios";
+const received = computed(() => {
     return state.received
 })
+onMounted(() => {
 
+    try {
+        setTimeout(async() => {const req = await axios.post('/GetMeals')
+        console.log(req);}, 500);
+    }
+    catch (error) {
+        console.error(error);
+    }
+
+
+}
+)
 
 </script>
 

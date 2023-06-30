@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 
 export const state = reactive({
   connected: false,
-  received: [],
+  received: null,
 });
 
 export const socket = io();
@@ -17,6 +17,6 @@ socket.on("disconnect", () => {
 });
 
 socket.on("received", (...args) => {
-  state.received.push(args);
+  state.received = args;
 });
 
