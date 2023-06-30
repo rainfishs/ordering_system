@@ -35,7 +35,7 @@ def getmeals():
     with open(r'today\Meals.json','r',encoding='UTF-8') as f:
         data = json.load(f)
         socketio.emit('received',data)
-    return jsonify(result='OK')
+    return {}
 
 @app.route('/Meal', methods=['POST'])
 def setter():
@@ -48,7 +48,7 @@ def setter():
         f.seek(0)
         json.dump(data,f) 
         socketio.emit('received',data)
-    return jsonify(result='OK')
+    return {}
 
 
 if __name__ == '__main__':

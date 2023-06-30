@@ -1,23 +1,21 @@
 <template>
-    <n-config-provider :theme=darkTheme>
-        <n-layout>
-            <n-layout-header class="page-header">
-                <span>綜合業務組AD106點餐系統(統計午餐系統) v0.13</span>
-            </n-layout-header>
-            <NLayoutContent class="main-page">
-                {{ received }}
-            </NLayoutContent>
-            <n-layout-footer class="page-footer">
-                <span>made by rainfishs</span>
-            </n-layout-footer>
-        </n-layout>
-    </n-config-provider>
+    <n-layout>
+        <n-layout-header class="page-header">
+            <span>綜合業務組AD106點餐系統(統計午餐系統) v0.13</span>
+        </n-layout-header>
+        <NLayoutContent class="main-page">
+            {{ received }}
+        </NLayoutContent>
+        <n-layout-footer class="page-footer">
+            <span>made by rainfishs</span>
+        </n-layout-footer>
+    </n-layout>
 </template>
 
 <script setup>
 import { state } from "../socket";
 import { computed, onMounted } from "vue";
-import { NLayoutContent, NLayoutHeader, NLayoutFooter, NLayout, NConfigProvider, darkTheme } from "naive-ui";
+import { NLayoutContent, NLayoutHeader, NLayoutFooter, NLayout} from "naive-ui";
 import axios from "axios";
 const received = computed(() => {
     return state.received
@@ -25,8 +23,10 @@ const received = computed(() => {
 onMounted(() => {
 
     try {
-        setTimeout(async() => {const req = await axios.post('/GetMeals')
-        console.log(req);}, 500);
+        setTimeout(async () => {
+            const req = await axios.post('/GetMeals')
+            console.log(req);
+        }, 500);
     }
     catch (error) {
         console.error(error);

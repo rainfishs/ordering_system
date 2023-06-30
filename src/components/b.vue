@@ -1,5 +1,5 @@
 <template>
-    <n-config-provider :theme=darkTheme>
+    
         <n-layout>
             <n-layout-header class="page-header">
                 <span>綜合業務組AD106點餐系統(統計午餐系統) v0.13</span>
@@ -80,13 +80,13 @@
                 made by rainfishs
             </n-layout-footer>
         </n-layout>
-    </n-config-provider>
+
 </template>
 
 <script setup>
 import axios from "axios";
 import { onBeforeMount, reactive, toRaw, ref } from "vue";
-import { useMessage, NModal, NSelect, NPopover, NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NDivider, NConfigProvider, darkTheme, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NButton, NIcon, NInputNumber, NImage } from 'naive-ui'
+import { useDialog, useMessage, NModal, NSelect, NPopover, NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NDivider, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NButton, NIcon, NInputNumber, NImage } from 'naive-ui'
 import { TrashAlt } from '@vicons/fa'
 import { Send } from '@vicons/ionicons5'
 const chosenMeal = ref([])
@@ -94,6 +94,7 @@ const stuff = ref(null)
 const showModal = ref(false)
 const resetmenubutton = ref(false)
 const message = useMessage();
+const dialog = useDialog();
 
 const getoptions = (key) => {
     //console.log(Menu.categories);
@@ -212,15 +213,17 @@ const getStuffs = async () => {
 getStuffs()
 
 const sendMeal = async () => {
-    let m = toRaw(chosenMeal.value)
+    let m = JSON.parse(JSON.stringify(chosenMeal.value))
+    
+    console.log(m);
     const s = toRaw(stuff.value)
     if (m.length === 0) {
         message.error("未選取任何餐點")
     }
-    else if (s === null) {
+    if (s === null) {
         message.error("未選取人員")
     }
-    else {
+    else if(m.length !== 0){
         m = m.map((value) => {
             delete value['options']
             return value
@@ -234,11 +237,28 @@ const sendMeal = async () => {
                 }
             })
             console.log(req);
+            if (req['status'] === 200) {
+                dialog.success({
+                    title: '成功送出!',
+                    content: '',
+                    positiveText: 'ok',
+                    onPositiveClick: () => {
+                        message.success('耶！')
+                    }
+                })
+            }
+            else{
+                dialog.error({
+                    title: '失敗!',
+                    content: '你可以嘗試再傳一次',
+                    positiveText: 'ok'
+                })
+            }
         }
         catch (error) {
             console.error(error);
         }
-        
+
     }
 }
 
