@@ -10,7 +10,9 @@ def hello():
 
 @app.route("/admin")
 def helloadmin():
-    return render_template('admin.html')
+    if request.headers.environ['REMOTE_ADDR'] == '127.0.0.1':
+        return render_template('admin.html')
+    return '404',404
 
 @app.route('/GetMenu', methods=['GET'])
 def getmenu():
@@ -53,4 +55,4 @@ def setter():
 
 if __name__ == '__main__':
     os.system('copy.bat')
-    app.run('0.0.0.0',debug=True,port=8080)
+    socketio.run(app,'0.0.0.0',debug=True,port=8080)
