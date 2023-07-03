@@ -54,5 +54,4 @@ def setter():
 
 
 if __name__ == '__main__':
-    os.system('copy.bat')
     socketio.run(app,'0.0.0.0',debug=True,port=8080)

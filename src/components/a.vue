@@ -18,7 +18,7 @@ import { computed, onMounted } from "vue";
 import { NLayoutContent, NLayoutHeader, NLayoutFooter, NLayout} from "naive-ui";
 import axios from "axios";
 const received = computed(() => {
-    return state.received
+    return state.received[0]
 })
 onMounted(() => {
 
