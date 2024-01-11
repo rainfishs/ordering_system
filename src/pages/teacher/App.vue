@@ -1,5 +1,5 @@
 <template>
-    <n-config-provider :theme=darkTheme :theme-overrides="themeOverrides">
+    <n-config-provider :theme=darkTheme>
         <n-dialog-provider>
             <n-message-provider>
                 <A />
@@ -12,9 +12,6 @@
 </style>
 
 <script setup>
-import A from '../../components/Admin.vue'
+import A from '../../components/Teacher.vue'
 import { NMessageProvider, NDialogProvider,NConfigProvider,darkTheme } from 'naive-ui'
-import('naive-ui').GlobalThemeOverrides
-const themeOverrides ={
-}
 </script>

@@ -83,7 +83,7 @@
 
 <script setup>
 import axios from "axios";
-import { onBeforeMount, reactive, toRaw, ref } from "vue";
+import { onMounted ,onBeforeMount, reactive, toRaw, ref } from "vue";
 import { useDialog, useMessage, NModal, NSelect, NPopover, NRadioGroup, NRadio, NCheckboxGroup, NCheckbox, NDivider, NGrid, NGridItem, NMenu, NLayout, NLayoutFooter, NLayoutHeader, NLayoutContent, NCard, NButton, NIcon, NInputNumber, NImage } from 'naive-ui'
 import { TrashAlt } from '@vicons/fa'
 import { Send } from '@vicons/ionicons5'
@@ -210,7 +210,10 @@ const sendMeal = async () => {
     }
 }
 
-
+onMounted(() => {
+    //抓dom的值
+    console.log(document.getElementById('test-dom').value);
+})
 
 </script>
 
