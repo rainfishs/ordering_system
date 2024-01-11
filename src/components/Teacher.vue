@@ -38,7 +38,7 @@
                     <n-flex>
                         <n-select v-model:value="course_will_delete" placeholder="選擇課程" :options="course_options_teaches"
                                 style="width: 150px; padding-left: 25px;" filterable />
-                        <n-popconfirm @positive-click="DeleteTeachesCourse();course_select = null">
+                        <n-popconfirm @positive-click="DeleteTeachesCourse();course_select = null;course_will_delete = null">
                             <template #trigger>
                             <n-button color="#ff69b4">
                                 刪除 <template #icon><n-icon> <trash/> </n-icon></template>
