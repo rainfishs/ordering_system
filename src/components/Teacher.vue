@@ -38,7 +38,7 @@
                     <n-flex>
                         <n-select v-model:value="course_will_delete" placeholder="選擇課程" :options="course_options_teaches"
                                 style="width: 150px; padding-left: 25px;" filterable />
-                        <n-popconfirm @positive-click="DeleteTeachesCourse">
+                        <n-popconfirm @positive-click="DeleteTeachesCourse();course_select = null">
                             <template #trigger>
                             <n-button color="#ff69b4">
                                 刪除 <template #icon><n-icon> <trash/> </n-icon></template>
@@ -81,8 +81,8 @@
                                 <n-form-item label="項目名稱">
                                 <n-input v-model:value="formValue.item.iName" placeholder="輸入名稱" />
                                 </n-form-item>
-                                <n-form-item label="占比">
-                                <n-input v-model:value="formValue.item.scale" placeholder="輸入比例0~1" />
+                                <n-form-item label="占比 (0~1)">
+                                <n-input-number v-model:value="formValue.item.scale" :min="0" :max="1" placeholder="比例0~1" style="width: 80px;" :show-button="false"/>
                                 </n-form-item>
                                 <n-form-item>
                                 <n-button attr-type="button" @click="AddItem">
@@ -108,6 +108,7 @@
                     <n-data-table
                     :columns="Takescolumns"
                     :data="TakesTableData"
+                    :loading="TakesTableLoading"
                     />
                 </n-tab-pane>
                 <n-tab-pane name="Items" label="計分項目">
@@ -128,20 +129,17 @@
                             <n-select v-model:value="select_student" placeholder="選擇學生" :options="student_options"
                                 style="width: 165px;" filterable />
                             <n-input-number v-model:value="score" :min="0" :max="100" placeholder="分數" style="width: 60px;" :show-button="false"/>
-                            <n-popconfirm @positive-click="AddCourseItem">
-                                <template #trigger>
-                                <n-button color="#22D9E4">
-                                    新增 <template #icon><n-icon> <AddCircleOutline/> </n-icon></template>
-                                </n-button>
-                                </template>
-                                新增: {{ select_student }} 分數: {{ score }}
-                            </n-popconfirm>
+                            <n-button color="#22D9E4" @click="AddCourseItem">
+                                新增 <template #icon><n-icon> <AddCircleOutline/> </n-icon></template>
+                            </n-button>
                         </n-flex>
                     </n-flex>
                     <n-divider/>
                     <n-data-table
                     :columns="CourseItemcolumns"
                     :data="CourseItemTableData"
+                    :loading="CourseItemTableLoading"
+
                     />
                 </n-tab-pane>
                 
@@ -177,10 +175,12 @@ const dialog = useDialog();
 const formValue = reactive({
     item: {
         iName: '',
-        scale: '',
+        scale: 0,
     },
 })
 const score = ref(null)
+const CourseItemTableLoading = ref(false)
+const TakesTableLoading = ref(false)
 
 const course_will_add = ref(null)
 const course_will_delete = ref(null)
@@ -202,14 +202,14 @@ const student_options = ref([]) //有修某堂課的學生
 const Takescolumns = [
     {title: '學號', key: 'sId'},
     {title: '姓名', key: 'sName'},
-    {title: '學期成績', key: 'finalScore', render(row,index){return h(NInputNumber,{onUpdateValue(v) {TakesTableData.value[index].finalScore = v},defaultValue:row.finalScore,max:100,min:0,showButton:false,style:"width: 60px;"})}},
+    {title: '學期成績', key: 'finalScore', render(row,index){return h(NInputNumber,{onUpdateValue(v) {TakesTableData.value[index].finalScore = v},placeholder:"分數",value:Number(row.finalScore),max:100,min:0,showButton:false,style:"width: 60px;"})}},
     {title: '變更成績', key: 'update', render(row,index){return h(NButton,{color:"#22D9E4",onClick:()=>{UpdateFinalScore(course_select.value,row.sId,TakesTableData.value[index].finalScore)}},()=>{return "更新"})}},
 ]
 const CourseItemcolumns = [
     {title: '學號', key: 'sId'},
     {title: '姓名', key: 'sName'},
-    {title: '成績', key: 'Score', render(row,index){return h(NInputNumber,{onUpdateValue(v) {CourseItemTableData.value[index].Score = v},defaultValue:row.score,max:100,min:0,showButton:false,style:"width: 60px;"})}},
-    {title: '變更成績', key: 'update', render(row,index){return h(NButton,{color:"#22D9E4",onClick:()=>{UpdateSubmit(course_select.value,item_select.value,row.sId,CourseItemTableData.value[index].Score)}},()=>{return "更新"})}},
+    {title: '成績', key: 'score', render(row,index){return h(NInputNumber,{onUpdateValue(v) {CourseItemTableData.value[index].score = v},placeholder:"分數",value:Number(CourseItemTableData.value[index].score),max:100,min:0,showButton:false,style:"width: 60px;"})}},
+    {title: '變更成績', key: 'update', render(row,index){return h(NButton,{color:"#22D9E4",onClick:()=>{UpdateSubmit(course_select.value,item_select.value,row.sId,CourseItemTableData.value[index].score)}},()=>{return "更新"})}},
 ]
 
 const transformcourse_to_options = (data) => {
@@ -287,6 +287,7 @@ const GetItem = async () => {
 }
 //靠cNo找takes所有修這門課的學生列出其學號姓名和學期成績(takes.finalScore)
 const GetTakes = async () => { 
+    TakesTableLoading.value = true
     try{
         const response = await axios.post('http://localhost/GetTakes',{cNo:course_select.value})
         TakesTableData.value = response.data
@@ -294,15 +295,23 @@ const GetTakes = async () => {
     catch(error){
         console.log(error)
     }
+    finally{
+        TakesTableLoading.value = false
+    }
 }
 //依所選課程及其計分項目，列出所有修這門課的學生的學號姓名及這個項目成績
 const GetCourseItem = async () => { 
+    CourseItemTableLoading.value = true
     try{
         const response = await axios.post('http://localhost/GetSubmit',{cNo:course_select.value,iName:item_select.value})
         CourseItemTableData.value = response.data
+        //console.log(CourseItemTableData.value)
     }
     catch(error){
         console.log(error)
+    }
+    finally{
+        CourseItemTableLoading.value = false
     }
 }
 GetCourseItem()
